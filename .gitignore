@@ -1,10 +1,28 @@
-# Python-generated files
+# Python / build
 __pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
 
-# Virtual environments
-.venv
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Jupyter Book build artifacts
+book/_build/
+book/.jupyter_cache/
+book/_static/reports/
+book/_build/.jupyter_cache/
+book/_build/html/reports/
+
+# Environments
+.venv/
+.uv_cache/
+.cache/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
