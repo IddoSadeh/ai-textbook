@@ -1,0 +1,17 @@
+[project]
+name = "ai-textbook"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ghp-import>=2.1.0",
+    "ipykernel>=6.30.1",
+    "jupyter-book>=1.0.4.post1",
+    "jupyterlab>=4.4.7",
+    "myst-parser>=3.0.1",
+    "sphinx-copybutton>=0.5.2",
+    "sphinx-design>=0.6.1",
+    "sphinx-external-toc>=1.0.1",
+    "sphinx-thebe>=0.3.1",
+]
