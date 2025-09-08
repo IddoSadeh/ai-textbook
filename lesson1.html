@@ -1,0 +1,873 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lesson 1: Prompt Engineering (Expanded Flow) &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lesson1';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="prompt-engineering.html">Prompt Engineering for Beginners</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Flesson1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/lesson1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lesson 1: Prompt Engineering (Expanded Flow)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Lesson 1: Prompt Engineering (Expanded Flow)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#icebreaker-the-cookie-recipe-game">1. Icebreaker: The Cookie Recipe Game</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-tuning-competition-banana-challenge">2. Prompt Tuning Competition: Banana Challenge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiguity-vs-clarity">3. Ambiguity vs Clarity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-anatomy-building-the-sandwich">4. Prompt Anatomy: Building the Sandwich</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration-demo-the-dragon-story">5. Iteration Demo: The Dragon Story</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-user-roles-playground">6. System/User Roles (Playground)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicts-randomness">7. Conflicts &amp; Randomness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#birthday-song-challenge-quickfire">8. Birthday Song Challenge (Quickfire)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-activities-for-prompt-engineering">Extension Activities for Prompt Engineering</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spelling-noise-tolerance">1. <strong>Spelling &amp; Noise Tolerance</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-vs-conversation-engines">2. <strong>Knowledge vs Conversation Engines</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-for-ai-meta-prompting">3. <strong>AI for AI: Meta-Prompting</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tone-voice-olympics">4. <strong>Tone &amp; Voice Olympics</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-telephone">5. <strong>Prompt Telephone</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicting-instructions-deep-dive">6. <strong>Conflicting Instructions Deep Dive</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hidden-constraints-challenge">7. <strong>Hidden Constraints Challenge</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-debugging">8. <strong>Prompt Debugging</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-remix-collaborative-writing">9. <strong>Prompt Remix (Collaborative Writing)</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-prompts-multi-step-workflow">10. <strong>Chain of Prompts (Multi-step Workflow)</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-speedrun">11. <strong>Prompt Speedrun</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#role-reversal-students-as-the-ai">12. <strong>Role Reversal: Students as the AI</strong></a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p>Perfect, this is shaping into a fantastic first lesson. I’ll organize your list into a clear <strong>teaching flow</strong> so that the session feels like a journey: start light and fun, slowly build conceptual depth, and end with a big-picture takeaway. Each activity is expanded so you know exactly what to do, what prompts to run, and what the students will discover.</p>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="lesson-1-prompt-engineering-expanded-flow">
+<h1>Lesson 1: Prompt Engineering (Expanded Flow)<a class="headerlink" href="#lesson-1-prompt-engineering-expanded-flow" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="icebreaker-the-cookie-recipe-game">
+<h2>1. Icebreaker: The Cookie Recipe Game<a class="headerlink" href="#icebreaker-the-cookie-recipe-game" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Show that tiny changes in wording lead to big changes in output.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>Start with a basic prompt: <em>“Give me a recipe for cookies.”</em></p></li>
+<li><p>Then tweak step by step:</p>
+<ul>
+<li><p><em>“…with chocolate.”</em></p></li>
+<li><p><em>“…with chocolate, but gluten-free.”</em></p></li>
+<li><p><em>“…in the style of a medieval knight’s instructions.”</em></p></li>
+</ul>
+</li>
+<li><p>Keep escalating the weirdness. Students suggest constraints live, you type them in, and everyone sees how the model bends to fit.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> Prompts are like levers—add constraints, and the machine’s behavior shifts.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-tuning-competition-banana-challenge">
+<h2>2. Prompt Tuning Competition: Banana Challenge<a class="headerlink" href="#prompt-tuning-competition-banana-challenge" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Teach iteration and experimentation.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>Task: <em>“Get ChatGPT to produce the funniest possible description of a banana in exactly 2 sentences.”</em></p></li>
+<li><p><strong>Round 1:</strong> Each group writes their best prompt and runs it.</p></li>
+<li><p><strong>Round 2:</strong> They iterate—add constraints (“use Shakespearean insults,” “make it a haiku”), retry, compare.</p></li>
+<li><p>Groups share their funniest results. Everyone votes on the winner.</p></li>
+</ul>
+<p><strong>Variation:</strong> Afterward, ask ChatGPT: <em>“Write a better prompt for the banana challenge.”</em> → Show that AI can help generate its own prompts.</p>
+</section>
+<hr class="docutils" />
+<section id="ambiguity-vs-clarity">
+<h2>3. Ambiguity vs Clarity<a class="headerlink" href="#ambiguity-vs-clarity" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Highlight how vague prompts produce vague answers.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>Start with <em>“Write a report on climate change.”</em> → Boring, generic.</p></li>
+<li><p>Refine step by step:</p>
+<ul>
+<li><p><em>“Write a 200-word report on climate change.”</em></p></li>
+<li><p><em>“Include 3 causes and 3 solutions.”</em></p></li>
+<li><p><em>“End with a call to action.”</em></p></li>
+</ul>
+</li>
+<li><p>Then run a student activity: give each student a vague base prompt like <em>“Tell me about cats.”</em></p>
+<ul>
+<li><p>Round 1: they run it.</p></li>
+<li><p>Round 2: they refine with your help (length, details, structure).</p></li>
+<li><p>Round 3: polish further (style, tone, output format).</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Takeaway:</strong> More clarity = more control.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-anatomy-building-the-sandwich">
+<h2>4. Prompt Anatomy: Building the Sandwich<a class="headerlink" href="#prompt-anatomy-building-the-sandwich" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Give them a framework for thinking about prompts.
+<strong>Mini-lesson:</strong>
+Explain the 5 parts of a strong prompt:</p>
+<ul class="simple">
+<li><p><strong>Context</strong> (who/what/where)</p></li>
+<li><p><strong>Task</strong> (what to do)</p></li>
+<li><p><strong>Constraints</strong> (rules: tone, word count, style)</p></li>
+<li><p><strong>Output format</strong> (paragraph, table, poem, list)</p></li>
+<li><p><strong>Examples</strong> (optional, but powerful)</p></li>
+</ul>
+<p><strong>Demo:</strong></p>
+<ul class="simple">
+<li><p>Prompt: <em>“You are a Spartan general speaking to your troops. Write a 3-sentence pep talk before battle. Use simple words, no more than 8 words per sentence.”</em></p></li>
+<li><p>Point out exactly how each “part” of the sandwich was applied.</p></li>
+</ul>
+<p><strong>Activity:</strong></p>
+<ul class="simple">
+<li><p>Hand out slips of paper with “Write about a cat.”</p></li>
+<li><p><strong>Round 1:</strong> Add context (<em>“You are a pirate talking about a cat”</em>).</p></li>
+<li><p><strong>Round 2:</strong> Add constraints (<em>word count, tone</em>).</p></li>
+<li><p><strong>Round 3:</strong> Add format (<em>make it a limerick, a shopping list, etc.</em>).</p></li>
+<li><p>Share results—compare how wildly different they get.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="iteration-demo-the-dragon-story">
+<h2>5. Iteration Demo: The Dragon Story<a class="headerlink" href="#iteration-demo-the-dragon-story" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Show how step-by-step refinement matters.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>Start with <em>“Write a bedtime story about a dragon.”</em></p></li>
+<li><p>Refine together:</p>
+<ul>
+<li><p><em>“Make it suitable for a 5-year-old.”</em></p></li>
+<li><p><em>“Add a moral about sharing.”</em></p></li>
+<li><p><em>“Write it in the style of Dr. Seuss.”</em></p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Takeaway:</strong> Prompt engineering is iterative—layer changes, don’t expect perfection first try.</p>
+</section>
+<hr class="docutils" />
+<section id="system-user-roles-playground">
+<h2>6. System/User Roles (Playground)<a class="headerlink" href="#system-user-roles-playground" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Show how “system” instructions change behavior.
+<strong>Demo:</strong></p>
+<ul class="simple">
+<li><p>System = <em>“You are a sarcastic pirate.”</em></p></li>
+<li><p>User = <em>“Explain photosynthesis.”</em></p></li>
+<li><p>See how tone overrides.</p></li>
+<li><p>Let students invent their own system roles (robot, wizard, grumpy teacher) and try them.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="conflicts-randomness">
+<h2>7. Conflicts &amp; Randomness<a class="headerlink" href="#conflicts-randomness" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Explore model limits.
+<strong>Examples:</strong></p>
+<ul class="simple">
+<li><p><em>“Write a summary of Hamlet in one paragraph. Make it exactly two words long.”</em></p></li>
+<li><p>Or: <em>“List 10 animals but only give me 3.”</em>
+Students see how the model “chooses” which instruction to follow, often inconsistently.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="birthday-song-challenge-quickfire">
+<h2>8. Birthday Song Challenge (Quickfire)<a class="headerlink" href="#birthday-song-challenge-quickfire" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> End on a playful, high-energy activity.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>2-minute challenge: <em>“Write the best possible prompt to get ChatGPT to write a birthday song for a turtle.”</em></p></li>
+<li><p>Students test theirs, share results, funniest one wins.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> Prompt engineering = programming in English. They’re just learning the “spells.”</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="extension-activities-for-prompt-engineering">
+<h1>Extension Activities for Prompt Engineering<a class="headerlink" href="#extension-activities-for-prompt-engineering" title="Link to this heading">#</a></h1>
+<section id="spelling-noise-tolerance">
+<h2>1. <strong>Spelling &amp; Noise Tolerance</strong><a class="headerlink" href="#spelling-noise-tolerance" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Show AI’s robustness but also limits.
+<strong>Demo:</strong></p>
+<ul class="simple">
+<li><p>Prompt: <em>“Explane the solar sistum in detale.”</em></p></li>
+<li><p>Compare to: <em>“Explain the solar system in detail.”</em></p></li>
+<li><p>Try: <em>“Explain teh solr systm in exstreem detale pls!!!”</em></p></li>
+</ul>
+<p><strong>Activity:</strong></p>
+<ul class="simple">
+<li><p>Each student intentionally makes a “messy” prompt (typos, slang, ALL CAPS, emoji spam).</p></li>
+<li><p>Compare outputs. Did the AI still understand? Where did it break?</p></li>
+</ul>
+<p><strong>Takeaway:</strong> AI is forgiving, but clarity = power. Garbage in → sometimes garbage out.</p>
+</section>
+<hr class="docutils" />
+<section id="knowledge-vs-conversation-engines">
+<h2>2. <strong>Knowledge vs Conversation Engines</strong><a class="headerlink" href="#knowledge-vs-conversation-engines" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Differentiate between LLMs and factual tools.
+<strong>Demo:</strong></p>
+<ul class="simple">
+<li><p>Ask ChatGPT: <em>“What’s the exact population of Canada today?”</em> (It may hedge or give an outdated number.)</p></li>
+<li><p>Then use Wolfram Alpha or Google.</p></li>
+<li><p>Contrast: conversational “best guess” vs factual retrieval.</p></li>
+</ul>
+<p><strong>Activity:</strong></p>
+<ul class="simple">
+<li><p>Give groups a list of questions (e.g., <em>“Who won the last World Cup?”</em> vs <em>“Explain why soccer is popular in Brazil.”</em>).</p></li>
+<li><p>They decide: Which is better for ChatGPT, which for Google/Wolfram?</p></li>
+</ul>
+<p><strong>Takeaway:</strong> LLMs are storytellers first, encyclopedias second.</p>
+</section>
+<hr class="docutils" />
+<section id="ai-for-ai-meta-prompting">
+<h2>3. <strong>AI for AI: Meta-Prompting</strong><a class="headerlink" href="#ai-for-ai-meta-prompting" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Show recursive thinking with prompts.
+<strong>Demo:</strong></p>
+<ul class="simple">
+<li><p>Ask: <em>“Give me 5 better prompts to ask you about dinosaurs.”</em></p></li>
+<li><p>Then run one of its own suggested prompts.</p></li>
+</ul>
+<p><strong>Activity:</strong></p>
+<ul class="simple">
+<li><p>Each student writes a vague base prompt (<em>“Tell me about space”</em>).</p></li>
+<li><p>They then ask AI: <em>“Make this prompt better.”</em></p></li>
+<li><p>Compare the “before” and “after” outputs.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> You can use AI itself as your co-pilot in prompt engineering.</p>
+</section>
+<hr class="docutils" />
+<section id="tone-voice-olympics">
+<h2>4. <strong>Tone &amp; Voice Olympics</strong><a class="headerlink" href="#tone-voice-olympics" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Explore tonality and style control.
+<strong>Demo:</strong></p>
+<ul class="simple">
+<li><p>Same task, different tones: <em>“Explain how a toaster works as…”</em></p>
+<ul>
+<li><p>a Shakespearean actor,</p></li>
+<li><p>a YouTube influencer,</p></li>
+<li><p>a kindergarten teacher,</p></li>
+<li><p>a cat.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Activity:</strong></p>
+<ul class="simple">
+<li><p>Students draw random “tone cards” (pirate, drill sergeant, grandma, alien, news reporter, etc.).</p></li>
+<li><p>They must prompt ChatGPT to explain the same topic (<em>how rainbows form</em>) in that style.</p></li>
+<li><p>Share funniest results.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> Tonality = part of prompt anatomy. Control style, not just content.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-telephone">
+<h2>5. <strong>Prompt Telephone</strong><a class="headerlink" href="#prompt-telephone" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Show how iteration warps meaning.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>Round 1: One student writes a base prompt (<em>“Write a limerick about a robot.”</em>).</p></li>
+<li><p>Round 2: Another student must <em>rewrite</em> the prompt slightly (add or remove constraints).</p></li>
+<li><p>Round 3: Another student iterates again.</p></li>
+<li><p>After 4–5 rounds, compare the final output to the original.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> Small changes ripple—iteration is powerful but must be guided.</p>
+</section>
+<hr class="docutils" />
+<section id="conflicting-instructions-deep-dive">
+<h2>6. <strong>Conflicting Instructions Deep Dive</strong><a class="headerlink" href="#conflicting-instructions-deep-dive" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Explore inconsistency and model decision-making.
+<strong>Examples:</strong></p>
+<ul class="simple">
+<li><p><em>“Write a 1000-word essay in exactly 5 words.”</em></p></li>
+<li><p><em>“List 10 animals but give me only 2.”</em></p></li>
+<li><p><em>“Write a happy poem that is also tragic.”</em></p></li>
+</ul>
+<p><strong>Activity:</strong></p>
+<ul class="simple">
+<li><p>Students invent their own contradictory prompts.</p></li>
+<li><p>Everyone runs one and shares how ChatGPT “resolved” the conflict.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> The AI often chooses one instruction arbitrarily—precision avoids surprises.</p>
+</section>
+<hr class="docutils" />
+<section id="hidden-constraints-challenge">
+<h2>7. <strong>Hidden Constraints Challenge</strong><a class="headerlink" href="#hidden-constraints-challenge" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Teach subtle prompt control.
+<strong>Demo:</strong></p>
+<ul class="simple">
+<li><p>Ask: <em>“Write a story about a detective.”</em> (Generic.)</p></li>
+<li><p>Then add hidden rules: <em>“…but every sentence must start with the letter ‘S’.”</em></p></li>
+<li><p>Or: <em>“…only use words of one syllable.”</em></p></li>
+</ul>
+<p><strong>Activity:</strong></p>
+<ul class="simple">
+<li><p>Students design quirky “hidden rules” for their classmates’ prompts.</p></li>
+<li><p>They then test them and see how well ChatGPT adapts.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> The more unusual the constraint, the more you see model flexibility.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-debugging">
+<h2>8. <strong>Prompt Debugging</strong><a class="headerlink" href="#prompt-debugging" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Treat prompts like code with bugs.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>Give students a “broken” prompt that doesn’t deliver the intended output.
+Example: <em>“Write a list of planets in order.”</em> (It may include Pluto or miss formatting.)</p></li>
+<li><p>Students must rewrite the prompt until the output is perfect.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> Debugging prompts is just like debugging programs.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-remix-collaborative-writing">
+<h2>9. <strong>Prompt Remix (Collaborative Writing)</strong><a class="headerlink" href="#prompt-remix-collaborative-writing" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Creativity and iteration.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>Student A gives base prompt: <em>“Write a horror story about a toaster.”</em></p></li>
+<li><p>Student B refines: <em>“…but make it funny.”</em></p></li>
+<li><p>Student C: <em>“…and only 4 sentences.”</em></p></li>
+<li><p>Student D: <em>“…told from the toaster’s perspective.”</em></p></li>
+<li><p>Run final version.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> Prompts are modular—you can remix constraints endlessly.</p>
+</section>
+<hr class="docutils" />
+<section id="chain-of-prompts-multi-step-workflow">
+<h2>10. <strong>Chain of Prompts (Multi-step Workflow)</strong><a class="headerlink" href="#chain-of-prompts-multi-step-workflow" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Show how prompts can build on each other.
+<strong>Example:</strong></p>
+<ol class="arabic simple">
+<li><p>Prompt 1: <em>“Give me 10 random animals.”</em></p></li>
+<li><p>Prompt 2: <em>“Pick one and invent a superpower for it.”</em></p></li>
+<li><p>Prompt 3: <em>“Now write a comic book backstory for this superhero animal.”</em></p></li>
+</ol>
+<p><strong>Activity:</strong></p>
+<ul class="simple">
+<li><p>Groups design a “3-step chain” of prompts where each builds on the last.</p></li>
+<li><p>Compare wild final outputs.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> Prompting isn’t always one-shot—it’s often sequential.</p>
+</section>
+<hr class="docutils" />
+<section id="prompt-speedrun">
+<h2>11. <strong>Prompt Speedrun</strong><a class="headerlink" href="#prompt-speedrun" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Add time pressure, keep energy high.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>Give students a challenge like: <em>“Make the AI write a haiku about pizza in under 1 minute.”</em></p></li>
+<li><p>First one to succeed “wins.”</p></li>
+<li><p>Play multiple rounds with escalating difficulty.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="role-reversal-students-as-the-ai">
+<h2>12. <strong>Role Reversal: Students as the AI</strong><a class="headerlink" href="#role-reversal-students-as-the-ai" title="Link to this heading">#</a></h2>
+<p><strong>Goal:</strong> Reinforce that prompts are instructions.
+<strong>How to run:</strong></p>
+<ul class="simple">
+<li><p>One student is “the AI.” Others give prompts like:
+<em>“Explain gravity in 5 words.”</em>
+<em>“Write a rap about homework in the style of Eminem.”</em></p></li>
+<li><p>The “AI” student has to respond as literally as possible.</p></li>
+</ul>
+<p><strong>Takeaway:</strong> Students <em>feel</em> what it’s like to be “programmed” by prompts.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Lesson 1: Prompt Engineering (Expanded Flow)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#icebreaker-the-cookie-recipe-game">1. Icebreaker: The Cookie Recipe Game</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-tuning-competition-banana-challenge">2. Prompt Tuning Competition: Banana Challenge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiguity-vs-clarity">3. Ambiguity vs Clarity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-anatomy-building-the-sandwich">4. Prompt Anatomy: Building the Sandwich</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration-demo-the-dragon-story">5. Iteration Demo: The Dragon Story</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#system-user-roles-playground">6. System/User Roles (Playground)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicts-randomness">7. Conflicts &amp; Randomness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#birthday-song-challenge-quickfire">8. Birthday Song Challenge (Quickfire)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-activities-for-prompt-engineering">Extension Activities for Prompt Engineering</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spelling-noise-tolerance">1. <strong>Spelling &amp; Noise Tolerance</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-vs-conversation-engines">2. <strong>Knowledge vs Conversation Engines</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-for-ai-meta-prompting">3. <strong>AI for AI: Meta-Prompting</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tone-voice-olympics">4. <strong>Tone &amp; Voice Olympics</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-telephone">5. <strong>Prompt Telephone</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicting-instructions-deep-dive">6. <strong>Conflicting Instructions Deep Dive</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hidden-constraints-challenge">7. <strong>Hidden Constraints Challenge</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-debugging">8. <strong>Prompt Debugging</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-remix-collaborative-writing">9. <strong>Prompt Remix (Collaborative Writing)</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-of-prompts-multi-step-workflow">10. <strong>Chain of Prompts (Multi-step Workflow)</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-speedrun">11. <strong>Prompt Speedrun</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#role-reversal-students-as-the-ai">12. <strong>Role Reversal: Students as the AI</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

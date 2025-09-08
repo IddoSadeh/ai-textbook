@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; My sample book</title>
+    <title>Prompt Engineering for Beginners &#8212; My sample book</title>
   
   
   
@@ -178,7 +178,10 @@
                 </a>
             </li>
         </ul>
-        
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Prompt Engineering for Beginners</a></li>
+</ul>
+
     </div>
 </nav></div>
     </div>
@@ -362,7 +365,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Prompt Engineering for Beginners</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -371,9 +374,29 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-llm">What Is an LLM?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-predicting-the-next-word">Example: Predicting the Next Word</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-and-prompt-engineering">Prompts and Prompt engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-basic-rules">Some basic rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-redundancy">Avoid redundancy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tokens-and-context-windows">Tokens and Context Windows</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dilbert-on-writing">Dilbert on Writing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quirks-and-limits">Quirks and Limits</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#side-not-on-spelling">Side not on spelling</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-quirk">Another quirk</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicting-instructions">Conflicting Instructions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anatomy-of-a-strong-prompt">Anatomy of a Strong Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration-prompts-as-drafts">Iteration: Prompts as Drafts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-ai-to-improve-prompts">Using AI to Improve Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
             </nav>
         </div>
     </div>
@@ -384,7 +407,208 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  
+  <section class="tex2jax_ignore mathjax_ignore" id="prompt-engineering-for-beginners">
+<h1>Prompt Engineering for Beginners<a class="headerlink" href="#prompt-engineering-for-beginners" title="Link to this heading">#</a></h1>
+<section id="what-is-an-llm">
+<h2>What Is an LLM?<a class="headerlink" href="#what-is-an-llm" title="Link to this heading">#</a></h2>
+<p>A <strong>Large Language Model (LLM)</strong> is a computer program trained to predict the next token in a sequence of tokens.</p>
+<p>A <strong>token</strong> is a unit of input. In text, it might be a whole word, part of a word, or punctuation. In image models, tokens can even be pixels or patches.</p>
+<p>To understand training, start with a simple math function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">mx</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>Here, <em>y</em> is the output, <em>x</em> the input, and <em>m</em> and <em>b</em> are values learned from data.</p>
+<p>An LLM is like a much more complicated version:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>y = a₁x₁ + a₂x₂ + a₃x₃ + ...
+</pre></div>
+</div>
+<p>where each <em>x</em> is a token from your prompt (converted into a number), each <em>a</em> is a learned weight, and <em>y</em> is the model’s guess for the next token.</p>
+<section id="example-predicting-the-next-word">
+<h3>Example: Predicting the Next Word<a class="headerlink" href="#example-predicting-the-next-word" title="Link to this heading">#</a></h3>
+<p>Prompt:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">cat</span> <span class="n">sat</span> <span class="n">on</span> <span class="n">the</span>
+</pre></div>
+</div>
+<p>Step 1 – Assign IDs to tokens (toy example):</p>
+<ul class="simple">
+<li><p>“The” → 101</p></li>
+<li><p>“cat” → 57</p></li>
+<li><p>“sat” → 88</p></li>
+<li><p>“on” → 230</p></li>
+<li><p>“the” → 101</p></li>
+</ul>
+<p>Step 2 – Multiply by weights (simplified):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>y = a₁(101) + a₂(57) + a₃(88) + a₄(230) + a₅(101)
+</pre></div>
+</div>
+<p>Step 3 – Convert <em>y</em> into probabilities:</p>
+<ul class="simple">
+<li><p>P(“mat”) = 0.62</p></li>
+<li><p>P(“floor”) = 0.21</p></li>
+<li><p>P(“dog”) = 0.05</p></li>
+</ul>
+<p>The model predicts the next word is <strong>“mat.”</strong></p>
+<p>This is all an LLM does: adjust weights so it gets very good at predicting the next token. Different models (ChatGPT, Claude, Gemini) are trained on different data, so their weights differ—and that makes their answers feel different.</p>
+</section>
+</section>
+<section id="prompts-and-prompt-engineering">
+<h2>Prompts and Prompt engineering<a class="headerlink" href="#prompts-and-prompt-engineering" title="Link to this heading">#</a></h2>
+<p>A <strong>prompt</strong> is the input we give to the model. You will find that even small tweaks can have a big impact on the output. A good starting working example is trying to get the model to give you a cookie recipe. Try these examples out on your own.</p>
+<p><strong>Example: Cookie Recipe</strong></p>
+<ul class="simple">
+<li><p>Prompt: <em>“Give me a recipe for cookies.”</em>
+→ Output: a generic recipe. Typically for chocolate chip cookies, as this is the mos popular cookie.</p></li>
+<li><p>Prompt: <em>“My doctor recommended me to make cookies, can you give me a recipe?”</em>
+→ Output: You will still typically get recipe for chocolate chip cookies, however you may notice the model recommends less sugar this time.</p></li>
+</ul>
+<p>The structure of the prompt acts like different <em>x</em> values in our earlier equation: the weights stay the same, but new inputs change the prediction. Your original prompt therefore has a huge impact on the ouput. Prompt engineering is the art of constructing the right prompt to get your desired results.</p>
+</section>
+<section id="some-basic-rules">
+<h2>Some basic rules<a class="headerlink" href="#some-basic-rules" title="Link to this heading">#</a></h2>
+<section id="avoid-redundancy">
+<h3>Avoid redundancy<a class="headerlink" href="#avoid-redundancy" title="Link to this heading">#</a></h3>
+<p>Stacking the same word (“very very very funny”) doesn’t change much, because the model has learned that repetition adds little signal.</p>
+<p><strong>Example with tokens:</strong></p>
+<ul class="simple">
+<li><p>“very” → token ID 412</p></li>
+<li><p>Adding “very” five times means the input looks like: [banana, 57], [very, 412], [very, 412], [very, 412] …</p></li>
+<li><p>The model’s learned weights downplay redundancy, so the prediction doesn’t shift much.</p></li>
+</ul>
+<p><strong>Better approach:</strong> Use descriptive tokens.</p>
+</section>
+<section id="tokens-and-context-windows">
+<h3>Tokens and Context Windows<a class="headerlink" href="#tokens-and-context-windows" title="Link to this heading">#</a></h3>
+<p>An LLM only remembers a limited number of tokens at once—its <strong>context window.</strong></p>
+<p><strong>Example:</strong> Suppose the context window is 8 tokens.</p>
+<p>Prompt:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Once</span> <span class="n">upon</span> <span class="n">a</span> <span class="n">time</span> <span class="n">there</span> <span class="n">was</span> <span class="n">a</span> <span class="n">little</span> <span class="n">dragon</span> <span class="n">who</span>
+</pre></div>
+</div>
+<p>Tokenized (toy IDs): [11, 56, 78, 93, 45, 32, 67, 120, 22, 99]</p>
+<p>Only the last 8 tokens fit in the window: [78, 93, 45, 32, 67, 120, 22, 99]</p>
+<p>So when predicting the next word, the model has already “forgotten” <em>Once upon</em>.</p>
+<p>As conversations get longer, important details may fall out of memory, which is why the model sometimes repeats itself or contradicts earlier parts.</p>
+<p>Nowadays context windows can get very long - upwards of a millon tokens. However, in practice, even models with large context windows deteriorate in prefermance the more tokens are used.</p>
+</section>
+<section id="dilbert-on-writing">
+<h3>Dilbert on Writing<a class="headerlink" href="#dilbert-on-writing" title="Link to this heading">#</a></h3>
+<p>I recommend reading this blog post by scott adams when thinking about prompt writing in the context of the last two points. <a class="reference external" href="https://dilbertblog.typepad.com/the_dilbert_blog/2007/06/the_day_you_bec.html">https://dilbertblog.typepad.com/the_dilbert_blog/2007/06/the_day_you_bec.html</a></p>
+</section>
+<section id="quirks-and-limits">
+<h3>Quirks and Limits<a class="headerlink" href="#quirks-and-limits" title="Link to this heading">#</a></h3>
+<p>LLMs sometimes glitch on uunexpected questions. A common quirk is asking an LLM to count how many of a given letter is in a word. You can see some examples in this reddit thread <a class="reference external" href="https://www.reddit.com/r/OpenAI/comments/1e6dl54/why_the_strawberry_problem_is_hard_for_llms/">https://www.reddit.com/r/OpenAI/comments/1e6dl54/why_the_strawberry_problem_is_hard_for_llms/</a></p>
+<section id="side-not-on-spelling">
+<h4>Side not on spelling<a class="headerlink" href="#side-not-on-spelling" title="Link to this heading">#</a></h4>
+<p>The above quirk makes LLMs surprisingly forgiving of typos. When a word is tokenized the exact spelling isnt saved.</p>
+<p><strong>Example:</strong></p>
+<p>Prompt: <em>“Explain the solr systm.”</em></p>
+<p>Tokenized: [Explain, 209], [the, 101], [solr, 803], [systm, 690]</p>
+<p>Even though “solr” and “systm” aren’t normal words, the model’s weights link them closely to tokens like “solar” and “system.”</p>
+<p>Probabilities:</p>
+<ul class="simple">
+<li><p>P(“system”) = 0.74</p></li>
+<li><p>P(“sun”) = 0.12</p></li>
+<li><p>P(“planet”) = 0.07</p></li>
+</ul>
+<p>So the model still explains the <strong>solar system</strong>.</p>
+<p>But if the tokens are too far from known ones, predictions get less reliable.</p>
+</section>
+</section>
+<section id="another-quirk">
+<h3>Another quirk<a class="headerlink" href="#another-quirk" title="Link to this heading">#</a></h3>
+<p><strong>Example:</strong></p>
+<p>Prompt: <em>“Does a seahorse emoji exist?”</em></p>
+<p>If the model hasn’t learned consistent weights for this case, the token [seahorse, 355] + [emoji, 821] may produce contradictory activations: sometimes “yes,” sometimes “no,” sometimes gibberish.</p>
+<p>This happens because the model isn’t a reasoning engine—it’s a prediction machine. Outlier prompts push it into areas where its training weights are unstable.</p>
+</section>
+</section>
+<section id="conflicting-instructions">
+<h2>Conflicting Instructions<a class="headerlink" href="#conflicting-instructions" title="Link to this heading">#</a></h2>
+<p>When a prompt includes contradictions, the model can’t satisfy everything.</p>
+<p><strong>Example:</strong></p>
+<p>Prompt: <em>“Write a summary of Hamlet in one paragraph and exactly two words.”</em></p>
+<p>Tokenized instructions: [summary, 601], [paragraph, 340], [two, 405], [words, 512]</p>
+<p>Weights pull in two different directions:</p>
+<ul class="simple">
+<li><p>“paragraph” pushes toward generating many tokens.</p></li>
+<li><p>“two words” pushes toward a short answer.</p></li>
+</ul>
+<p>The model must choose. It might output:</p>
+<ul class="simple">
+<li><p><em>“Tragic prince.”</em> (obeys “two words”)</p></li>
+<li><p>Or <em>“Hamlet is a story of revenge and tragedy…”</em> (obeys “paragraph”).</p></li>
+</ul>
+<p>Which path it takes depends on how the conflicting instructions interact in the weighted function.</p>
+</section>
+<hr class="docutils" />
+<section id="anatomy-of-a-strong-prompt">
+<h2>Anatomy of a Strong Prompt<a class="headerlink" href="#anatomy-of-a-strong-prompt" title="Link to this heading">#</a></h2>
+<p>Good prompts avoid conflict and balance five elements:</p>
+<ol class="arabic simple">
+<li><p><strong>Context</strong> – who/what/where the AI should “be.”</p></li>
+<li><p><strong>Task</strong> – what to do.</p></li>
+<li><p><strong>Constraints</strong> – rules (tone, word count, style).</p></li>
+<li><p><strong>Output format</strong> – how the response should look.</p></li>
+<li><p><strong>Examples</strong> – optional, but powerful.</p></li>
+</ol>
+<p><strong>Example Prompt:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">You</span> <span class="n">are</span> <span class="n">a</span> <span class="n">Spartan</span> <span class="n">general</span><span class="o">.</span>
+<span class="n">Write</span> <span class="n">a</span> <span class="n">pep</span> <span class="n">talk</span> <span class="ow">in</span> <span class="mi">3</span> <span class="n">sentences</span><span class="o">.</span>
+<span class="n">Use</span> <span class="n">simple</span> <span class="n">words</span><span class="o">.</span>
+<span class="n">No</span> <span class="n">sentence</span> <span class="n">may</span> <span class="n">exceed</span> <span class="mi">8</span> <span class="n">words</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Tokens: [Spartan, 742], [general, 188], [pep, 611], [talk, 330], [simple, 190], [words, 512] …</p>
+<p>Because these tokens strongly activate learned weights for tone and style, the model outputs short, forceful lines.</p>
+</section>
+<hr class="docutils" />
+<section id="iteration-prompts-as-drafts">
+<h2>Iteration: Prompts as Drafts<a class="headerlink" href="#iteration-prompts-as-drafts" title="Link to this heading">#</a></h2>
+<p>Prompting is iterative: like editing drafts, you refine step by step.</p>
+<p><strong>Example – The Dragon Story</strong></p>
+<ol class="arabic simple">
+<li><p>Prompt: <em>“Tell me a story about a dragon.”</em>
+Tokens: [story, 145], [dragon, 302] → generic output.</p></li>
+<li><p>Add constraint: <em>“…for a 5-year-old.”</em>
+Token [5-year-old, 712] pulls the style toward simpler words.</p></li>
+<li><p>Add theme: <em>“…with a moral about sharing.”</em>
+Token [sharing, 366] increases likelihood of moralizing ending.</p></li>
+<li><p>Add style: <em>“…in the style of Dr. Seuss.”</em>
+Token [Dr. Seuss, 498] tilts prediction toward rhyme and rhythm.</p></li>
+</ol>
+<p>Each added token shifts the output distribution until it matches the desired style.</p>
+</section>
+<hr class="docutils" />
+<section id="using-ai-to-improve-prompts">
+<h2>Using AI to Improve Prompts<a class="headerlink" href="#using-ai-to-improve-prompts" title="Link to this heading">#</a></h2>
+<p>You can also ask the AI to improve your own instructions.</p>
+<p><strong>Example:</strong></p>
+<p>Prompt: <em>“Here’s my prompt: describe a banana in a funny way. Suggest a better version.”</em></p>
+<p>Model’s output might be:</p>
+<ul class="simple">
+<li><p><em>“Describe a banana as if Shakespeare wrote a comedy about fruit.”</em></p></li>
+</ul>
+<p>Here, the token [Shakespeare, 742] strongly activates associations with Elizabethan style, producing more vivid outputs.</p>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>LLMs are giant functions predicting the next token.</p></li>
+<li><p>Tokens are numbers; weights tell the model how to combine them.</p></li>
+<li><p>Prompts are instructions—changing the tokens changes the output.</p></li>
+<li><p>Redundancy is weak; descriptive tokens are powerful.</p></li>
+<li><p>Context windows limit memory: too many tokens push old ones out.</p></li>
+<li><p>Models handle typos but reward clarity.</p></li>
+<li><p>Contradictory prompts confuse predictions.</p></li>
+<li><p>Strong prompts balance context, task, constraints, format, and examples.</p></li>
+<li><p>Iteration works: each new token shifts the distribution closer to your goal.</p></li>
+<li><p>AI itself can help you craft better prompts.</p></li>
+<li><p>Quirks remind us: LLMs are powerful, but not perfect.</p></li>
+</ul>
+</section>
+</section>
+
     <script type="text/x-thebe-config">
     {
         requestKernel: true,
@@ -439,9 +663,29 @@ document.write(`
     <i class="fa-solid fa-list"></i> Contents
   </div>
   <nav class="bd-toc-nav page-toc">
-    <ul class="simple visible nav section-nav flex-column">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-llm">What Is an LLM?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-predicting-the-next-word">Example: Predicting the Next Word</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-and-prompt-engineering">Prompts and Prompt engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-basic-rules">Some basic rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-redundancy">Avoid redundancy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tokens-and-context-windows">Tokens and Context Windows</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dilbert-on-writing">Dilbert on Writing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quirks-and-limits">Quirks and Limits</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#side-not-on-spelling">Side not on spelling</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-quirk">Another quirk</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicting-instructions">Conflicting Instructions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anatomy-of-a-strong-prompt">Anatomy of a Strong Prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration-prompts-as-drafts">Iteration: Prompts as Drafts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-ai-to-improve-prompts">Using AI to Improve Prompts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
   </nav></div>
 
 </div></div>
