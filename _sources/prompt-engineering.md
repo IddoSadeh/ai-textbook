@@ -1,4 +1,4 @@
-# Prompt Engineering for Beginners
+# Prompt Engineering for Beginners 
 
 ## What Is an LLM?
 
@@ -54,35 +54,34 @@ The model predicts the next word is **“mat.”**
 
 This is all an LLM does: adjust weights so it gets very good at predicting the next token. Different models (ChatGPT, Claude, Gemini) are trained on different data, so their weights differ—and that makes their answers feel different.
 
+An interesting blog post on the different "personalties" of different LLM's https://guive.substack.com/p/alignment-fine-tuning-is-character
 
-## Prompts and Prompt engineering
+## Prompts and Prompt Engineering
 
-A **prompt** is the input we give to the model. You will find that even small tweaks can have a big impact on the output. A good starting working example is trying to get the model to give you a cookie recipe. Try these examples out on your own.
+A **prompt** is the input we give to the model. Even small tweaks can have a big impact on the output.
 
 **Example: Cookie Recipe**
 
-* Prompt: *“Give me a recipe for cookies.”*
-  → Output: a generic recipe. Typically for chocolate chip cookies, as this is the mos popular cookie.
+* Prompt: *“Give me a recipe for cookies.”* → Output: a generic recipe (usually chocolate chip cookies, the most popular).
+* Prompt: *“My doctor recommended me to make cookies, can you give me a recipe?”* → Output: still a cookie recipe, but with less sugar.
 
-* Prompt: *“My doctor recommended me to make cookies, can you give me a recipe?”*
-  → Output: You will still typically get recipe for chocolate chip cookies, however you may notice the model recommends less sugar this time.
+The structure of the prompt acts like different *x* values in our earlier equation: the weights stay the same, but new inputs change the prediction. Prompt engineering is the art of constructing the right prompt to get your desired results.
 
-The structure of the prompt acts like different *x* values in our earlier equation: the weights stay the same, but new inputs change the prediction. Your original prompt therefore has a huge impact on the ouput. Prompt engineering is the art of constructing the right prompt to get your desired results.
 
-## Some basic rules
 
-### Avoid redundancy
+## Some Basic Rules
 
-Stacking the same word (“very very very funny”) doesn’t change much, because the model has learned that repetition adds little signal.
+### Avoid Redundancy
 
-**Example with tokens:**
+Stacking the same word (“very very very funny”) doesn’t change much. The model has learned that repetition adds little signal.
+
+**Example:**
 
 * “very” → token ID 412
-* Adding “very” five times means the input looks like: \[banana, 57], \[very, 412], \[very, 412], \[very, 412] …
-* The model’s learned weights downplay redundancy, so the prediction doesn’t shift much.
+* Adding “very” five times means the input looks like: \[banana, 57], \[very, 412], \[very, 412]…
+* The model’s weights downplay redundancy, so predictions don’t shift much.
 
-**Better approach:** Use descriptive tokens.
-
+**Better approach:** Use descriptive words like “hilarious” or “absurd.”
 
 ### Tokens and Context Windows
 
@@ -100,31 +99,30 @@ Tokenized (toy IDs): \[11, 56, 78, 93, 45, 32, 67, 120, 22, 99]
 
 Only the last 8 tokens fit in the window: \[78, 93, 45, 32, 67, 120, 22, 99]
 
-So when predicting the next word, the model has already “forgotten” *Once upon*.
+So when predicting the next word, the model has already “forgotten” *Once upon.*
 
-As conversations get longer, important details may fall out of memory, which is why the model sometimes repeats itself or contradicts earlier parts. 
+As conversations get longer, important details may fall out of memory, which is why the model sometimes repeats itself or contradicts earlier parts.
 
-Nowadays context windows can get very long - upwards of a millon tokens. However, in practice, even models with large context windows deteriorate in prefermance the more tokens are used.
+Modern context windows can be enormous—upwards of a million tokens—but even then, performance tends to degrade as more tokens are used.
 
 ### Dilbert on Writing
 
-I recommend reading this blog post by scott adams when thinking about prompt writing in the context of the last two points. https://dilbertblog.typepad.com/the_dilbert_blog/2007/06/the_day_you_bec.html
+Scott Adams’ blog post on writing is a good reminder of why clarity matters: [The Day You Became a Better Writer](https://dilbertblog.typepad.com/the_dilbert_blog/2007/06/the_day_you_bec.html)
 
 ### Quirks and Limits
 
-LLMs sometimes glitch on uunexpected questions. A common quirk is asking an LLM to count how many of a given letter is in a word. You can see some examples in this reddit thread https://www.reddit.com/r/OpenAI/comments/1e6dl54/why_the_strawberry_problem_is_hard_for_llms/
+LLMs sometimes glitch on unexpected questions. A common quirk is asking them to count letters in a word. See the Reddit thread on [the “strawberry problem”](https://www.reddit.com/r/OpenAI/comments/1e6dl54/why_the_strawberry_problem_is_hard_for_llms/).
 
-#### Side not on spelling 
+#### Side Note on Spelling
 
-The above quirk makes LLMs surprisingly forgiving of typos. When a word is tokenized the exact spelling isnt saved.
+Because of how tokenization works, models are surprisingly forgiving of typos.
 
 **Example:**
-
 Prompt: *“Explain the solr systm.”*
 
 Tokenized: \[Explain, 209], \[the, 101], \[solr, 803], \[systm, 690]
 
-Even though “solr” and “systm” aren’t normal words, the model’s weights link them closely to tokens like “solar” and “system.”
+Even though “solr” and “systm” aren’t standard words, the model links them to “solar” and “system.”
 
 Probabilities:
 
@@ -132,55 +130,50 @@ Probabilities:
 * P(“sun”) = 0.12
 * P(“planet”) = 0.07
 
-So the model still explains the **solar system**.
+So the model still explains the **solar system.**
 
-But if the tokens are too far from known ones, predictions get less reliable.
+But if tokens are too far from known ones, predictions become unreliable.
 
-### Another quirk
-
-**Example:**
+### Another Quirk: Seahorse Emoji
 
 Prompt: *“Does a seahorse emoji exist?”*
 
-If the model hasn’t learned consistent weights for this case, the token \[seahorse, 355] + \[emoji, 821] may produce contradictory activations: sometimes “yes,” sometimes “no,” sometimes gibberish.
+LLMs often glitch here: they may confidently say “yes,” try to show it, and fail—cycling through horse, fish, or unrelated emojis. This happens because LLMs are prediction machines, not reasoning engines. Outlier prompts push them into unstable behavior.
 
-This happens because the model isn’t a reasoning engine—it’s a prediction machine. Outlier prompts push it into areas where its training weights are unstable.
-
-
+---
 
 ## Conflicting Instructions
 
 When a prompt includes contradictions, the model can’t satisfy everything.
 
 **Example:**
-
 Prompt: *“Write a summary of Hamlet in one paragraph and exactly two words.”*
 
-Tokenized instructions: \[summary, 601], \[paragraph, 340], \[two, 405], \[words, 512]
+Tokens: \[summary, 601], \[paragraph, 340], \[two, 405], \[words, 512]
 
-Weights pull in two different directions:
+Weights pull in two directions:
 
 * “paragraph” pushes toward generating many tokens.
-* “two words” pushes toward a short answer.
+* “two words” pushes toward brevity.
 
 The model must choose. It might output:
 
 * *“Tragic prince.”* (obeys “two words”)
-* Or *“Hamlet is a story of revenge and tragedy…”* (obeys “paragraph”).
+* *“Hamlet is a story of revenge and tragedy…”* (obeys “paragraph”).
 
-Which path it takes depends on how the conflicting instructions interact in the weighted function.
+Which path it takes depends on how the instructions interact in the function.
 
 ---
 
 ## Anatomy of a Strong Prompt
 
-Good prompts avoid conflict and balance five elements:
+Good prompts balance five elements:
 
 1. **Context** – who/what/where the AI should “be.”
-2. **Task** – what to do.
+2. **Task** – what you want it to do.
 3. **Constraints** – rules (tone, word count, style).
 4. **Output format** – how the response should look.
-5. **Examples** – optional, but powerful.
+5. **Examples** – optional but powerful.
 
 **Example Prompt:**
 
@@ -189,33 +182,28 @@ You are a Spartan general.
 Write a pep talk in 3 sentences.
 Use simple words.
 No sentence may exceed 8 words.
+Here is an example pep talk:
+[insert example]
 ```
 
 Tokens: \[Spartan, 742], \[general, 188], \[pep, 611], \[talk, 330], \[simple, 190], \[words, 512] …
 
-Because these tokens strongly activate learned weights for tone and style, the model outputs short, forceful lines.
+These tokens activate strong associations with brevity and command, leading to short, forceful lines.
 
 ---
 
 ## Iteration: Prompts as Drafts
 
-Prompting is iterative: like editing drafts, you refine step by step.
+Prompting is iterative: like editing, you refine step by step.
 
 **Example – The Dragon Story**
 
-1. Prompt: *“Tell me a story about a dragon.”*
-   Tokens: \[story, 145], \[dragon, 302] → generic output.
+1. Prompt: *“Tell me a story about a dragon.”* → generic output.
+2. Add constraint: *“…for a 5-year-old.”* → simpler words.
+3. Add theme: *“…with a moral about sharing.”* → moralizing ending.
+4. Add style: *“…in the style of Dr. Seuss.”* → rhyme and rhythm.
 
-2. Add constraint: *“…for a 5-year-old.”*
-   Token \[5-year-old, 712] pulls the style toward simpler words.
-
-3. Add theme: *“…with a moral about sharing.”*
-   Token \[sharing, 366] increases likelihood of moralizing ending.
-
-4. Add style: *“…in the style of Dr. Seuss.”*
-   Token \[Dr. Seuss, 498] tilts prediction toward rhyme and rhythm.
-
-Each added token shifts the output distribution until it matches the desired style.
+Each added token shifts the distribution until it matches the desired style. Often, it helps to run multiple versions to find the best result.
 
 ---
 
@@ -224,16 +212,13 @@ Each added token shifts the output distribution until it matches the desired sty
 You can also ask the AI to improve your own instructions.
 
 **Example:**
-
 Prompt: *“Here’s my prompt: describe a banana in a funny way. Suggest a better version.”*
 
 Model’s output might be:
 
 * *“Describe a banana as if Shakespeare wrote a comedy about fruit.”*
 
-Here, the token \[Shakespeare, 742] strongly activates associations with Elizabethan style, producing more vivid outputs.
-
----
+Here, the token \[Shakespeare, 742] activates rich stylistic associations, producing more vivid outputs.
 
 
 ## Key Takeaways
@@ -241,7 +226,7 @@ Here, the token \[Shakespeare, 742] strongly activates associations with Elizabe
 * LLMs are giant functions predicting the next token.
 * Tokens are numbers; weights tell the model how to combine them.
 * Prompts are instructions—changing the tokens changes the output.
-* Redundancy is weak; descriptive tokens are powerful.
+* Redundancy is weak; descriptive words are strong.
 * Context windows limit memory: too many tokens push old ones out.
 * Models handle typos but reward clarity.
 * Contradictory prompts confuse predictions.
@@ -249,4 +234,3 @@ Here, the token \[Shakespeare, 742] strongly activates associations with Elizabe
 * Iteration works: each new token shifts the distribution closer to your goal.
 * AI itself can help you craft better prompts.
 * Quirks remind us: LLMs are powerful, but not perfect.
-

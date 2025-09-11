@@ -379,16 +379,16 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-predicting-the-next-word">Example: Predicting the Next Word</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-and-prompt-engineering">Prompts and Prompt engineering</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-basic-rules">Some basic rules</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-redundancy">Avoid redundancy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-and-prompt-engineering">Prompts and Prompt Engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-basic-rules">Some Basic Rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-redundancy">Avoid Redundancy</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tokens-and-context-windows">Tokens and Context Windows</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dilbert-on-writing">Dilbert on Writing</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quirks-and-limits">Quirks and Limits</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#side-not-on-spelling">Side not on spelling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#side-note-on-spelling">Side Note on Spelling</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-quirk">Another quirk</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-quirk-seahorse-emoji">Another Quirk: Seahorse Emoji</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicting-instructions">Conflicting Instructions</a></li>
@@ -449,32 +449,31 @@ document.write(`
 </ul>
 <p>The model predicts the next word is <strong>“mat.”</strong></p>
 <p>This is all an LLM does: adjust weights so it gets very good at predicting the next token. Different models (ChatGPT, Claude, Gemini) are trained on different data, so their weights differ—and that makes their answers feel different.</p>
+<p>An interesting blog post on the different “personalties” of different LLM’s <a class="reference external" href="https://guive.substack.com/p/alignment-fine-tuning-is-character">https://guive.substack.com/p/alignment-fine-tuning-is-character</a></p>
 </section>
 </section>
 <section id="prompts-and-prompt-engineering">
-<h2>Prompts and Prompt engineering<a class="headerlink" href="#prompts-and-prompt-engineering" title="Link to this heading">#</a></h2>
-<p>A <strong>prompt</strong> is the input we give to the model. You will find that even small tweaks can have a big impact on the output. A good starting working example is trying to get the model to give you a cookie recipe. Try these examples out on your own.</p>
+<h2>Prompts and Prompt Engineering<a class="headerlink" href="#prompts-and-prompt-engineering" title="Link to this heading">#</a></h2>
+<p>A <strong>prompt</strong> is the input we give to the model. Even small tweaks can have a big impact on the output.</p>
 <p><strong>Example: Cookie Recipe</strong></p>
 <ul class="simple">
-<li><p>Prompt: <em>“Give me a recipe for cookies.”</em>
-→ Output: a generic recipe. Typically for chocolate chip cookies, as this is the mos popular cookie.</p></li>
-<li><p>Prompt: <em>“My doctor recommended me to make cookies, can you give me a recipe?”</em>
-→ Output: You will still typically get recipe for chocolate chip cookies, however you may notice the model recommends less sugar this time.</p></li>
+<li><p>Prompt: <em>“Give me a recipe for cookies.”</em> → Output: a generic recipe (usually chocolate chip cookies, the most popular).</p></li>
+<li><p>Prompt: <em>“My doctor recommended me to make cookies, can you give me a recipe?”</em> → Output: still a cookie recipe, but with less sugar.</p></li>
 </ul>
-<p>The structure of the prompt acts like different <em>x</em> values in our earlier equation: the weights stay the same, but new inputs change the prediction. Your original prompt therefore has a huge impact on the ouput. Prompt engineering is the art of constructing the right prompt to get your desired results.</p>
+<p>The structure of the prompt acts like different <em>x</em> values in our earlier equation: the weights stay the same, but new inputs change the prediction. Prompt engineering is the art of constructing the right prompt to get your desired results.</p>
 </section>
 <section id="some-basic-rules">
-<h2>Some basic rules<a class="headerlink" href="#some-basic-rules" title="Link to this heading">#</a></h2>
+<h2>Some Basic Rules<a class="headerlink" href="#some-basic-rules" title="Link to this heading">#</a></h2>
 <section id="avoid-redundancy">
-<h3>Avoid redundancy<a class="headerlink" href="#avoid-redundancy" title="Link to this heading">#</a></h3>
-<p>Stacking the same word (“very very very funny”) doesn’t change much, because the model has learned that repetition adds little signal.</p>
-<p><strong>Example with tokens:</strong></p>
+<h3>Avoid Redundancy<a class="headerlink" href="#avoid-redundancy" title="Link to this heading">#</a></h3>
+<p>Stacking the same word (“very very very funny”) doesn’t change much. The model has learned that repetition adds little signal.</p>
+<p><strong>Example:</strong></p>
 <ul class="simple">
 <li><p>“very” → token ID 412</p></li>
-<li><p>Adding “very” five times means the input looks like: [banana, 57], [very, 412], [very, 412], [very, 412] …</p></li>
-<li><p>The model’s learned weights downplay redundancy, so the prediction doesn’t shift much.</p></li>
+<li><p>Adding “very” five times means the input looks like: [banana, 57], [very, 412], [very, 412]…</p></li>
+<li><p>The model’s weights downplay redundancy, so predictions don’t shift much.</p></li>
 </ul>
-<p><strong>Better approach:</strong> Use descriptive tokens.</p>
+<p><strong>Better approach:</strong> Use descriptive words like “hilarious” or “absurd.”</p>
 </section>
 <section id="tokens-and-context-windows">
 <h3>Tokens and Context Windows<a class="headerlink" href="#tokens-and-context-windows" title="Link to this heading">#</a></h3>
@@ -486,118 +485,114 @@ document.write(`
 </div>
 <p>Tokenized (toy IDs): [11, 56, 78, 93, 45, 32, 67, 120, 22, 99]</p>
 <p>Only the last 8 tokens fit in the window: [78, 93, 45, 32, 67, 120, 22, 99]</p>
-<p>So when predicting the next word, the model has already “forgotten” <em>Once upon</em>.</p>
+<p>So when predicting the next word, the model has already “forgotten” <em>Once upon.</em></p>
 <p>As conversations get longer, important details may fall out of memory, which is why the model sometimes repeats itself or contradicts earlier parts.</p>
-<p>Nowadays context windows can get very long - upwards of a millon tokens. However, in practice, even models with large context windows deteriorate in prefermance the more tokens are used.</p>
+<p>Modern context windows can be enormous—upwards of a million tokens—but even then, performance tends to degrade as more tokens are used.</p>
 </section>
 <section id="dilbert-on-writing">
 <h3>Dilbert on Writing<a class="headerlink" href="#dilbert-on-writing" title="Link to this heading">#</a></h3>
-<p>I recommend reading this blog post by scott adams when thinking about prompt writing in the context of the last two points. <a class="reference external" href="https://dilbertblog.typepad.com/the_dilbert_blog/2007/06/the_day_you_bec.html">https://dilbertblog.typepad.com/the_dilbert_blog/2007/06/the_day_you_bec.html</a></p>
+<p>Scott Adams’ blog post on writing is a good reminder of why clarity matters: <a class="reference external" href="https://dilbertblog.typepad.com/the_dilbert_blog/2007/06/the_day_you_bec.html">The Day You Became a Better Writer</a></p>
 </section>
 <section id="quirks-and-limits">
 <h3>Quirks and Limits<a class="headerlink" href="#quirks-and-limits" title="Link to this heading">#</a></h3>
-<p>LLMs sometimes glitch on uunexpected questions. A common quirk is asking an LLM to count how many of a given letter is in a word. You can see some examples in this reddit thread <a class="reference external" href="https://www.reddit.com/r/OpenAI/comments/1e6dl54/why_the_strawberry_problem_is_hard_for_llms/">https://www.reddit.com/r/OpenAI/comments/1e6dl54/why_the_strawberry_problem_is_hard_for_llms/</a></p>
-<section id="side-not-on-spelling">
-<h4>Side not on spelling<a class="headerlink" href="#side-not-on-spelling" title="Link to this heading">#</a></h4>
-<p>The above quirk makes LLMs surprisingly forgiving of typos. When a word is tokenized the exact spelling isnt saved.</p>
-<p><strong>Example:</strong></p>
-<p>Prompt: <em>“Explain the solr systm.”</em></p>
+<p>LLMs sometimes glitch on unexpected questions. A common quirk is asking them to count letters in a word. See the Reddit thread on <a class="reference external" href="https://www.reddit.com/r/OpenAI/comments/1e6dl54/why_the_strawberry_problem_is_hard_for_llms/">the “strawberry problem”</a>.</p>
+<section id="side-note-on-spelling">
+<h4>Side Note on Spelling<a class="headerlink" href="#side-note-on-spelling" title="Link to this heading">#</a></h4>
+<p>Because of how tokenization works, models are surprisingly forgiving of typos.</p>
+<p><strong>Example:</strong>
+Prompt: <em>“Explain the solr systm.”</em></p>
 <p>Tokenized: [Explain, 209], [the, 101], [solr, 803], [systm, 690]</p>
-<p>Even though “solr” and “systm” aren’t normal words, the model’s weights link them closely to tokens like “solar” and “system.”</p>
+<p>Even though “solr” and “systm” aren’t standard words, the model links them to “solar” and “system.”</p>
 <p>Probabilities:</p>
 <ul class="simple">
 <li><p>P(“system”) = 0.74</p></li>
 <li><p>P(“sun”) = 0.12</p></li>
 <li><p>P(“planet”) = 0.07</p></li>
 </ul>
-<p>So the model still explains the <strong>solar system</strong>.</p>
-<p>But if the tokens are too far from known ones, predictions get less reliable.</p>
+<p>So the model still explains the <strong>solar system.</strong></p>
+<p>But if tokens are too far from known ones, predictions become unreliable.</p>
 </section>
 </section>
-<section id="another-quirk">
-<h3>Another quirk<a class="headerlink" href="#another-quirk" title="Link to this heading">#</a></h3>
-<p><strong>Example:</strong></p>
+<section id="another-quirk-seahorse-emoji">
+<h3>Another Quirk: Seahorse Emoji<a class="headerlink" href="#another-quirk-seahorse-emoji" title="Link to this heading">#</a></h3>
 <p>Prompt: <em>“Does a seahorse emoji exist?”</em></p>
-<p>If the model hasn’t learned consistent weights for this case, the token [seahorse, 355] + [emoji, 821] may produce contradictory activations: sometimes “yes,” sometimes “no,” sometimes gibberish.</p>
-<p>This happens because the model isn’t a reasoning engine—it’s a prediction machine. Outlier prompts push it into areas where its training weights are unstable.</p>
+<p>LLMs often glitch here: they may confidently say “yes,” try to show it, and fail—cycling through horse, fish, or unrelated emojis. This happens because LLMs are prediction machines, not reasoning engines. Outlier prompts push them into unstable behavior.</p>
 </section>
 </section>
+<hr class="docutils" />
 <section id="conflicting-instructions">
 <h2>Conflicting Instructions<a class="headerlink" href="#conflicting-instructions" title="Link to this heading">#</a></h2>
 <p>When a prompt includes contradictions, the model can’t satisfy everything.</p>
-<p><strong>Example:</strong></p>
-<p>Prompt: <em>“Write a summary of Hamlet in one paragraph and exactly two words.”</em></p>
-<p>Tokenized instructions: [summary, 601], [paragraph, 340], [two, 405], [words, 512]</p>
-<p>Weights pull in two different directions:</p>
+<p><strong>Example:</strong>
+Prompt: <em>“Write a summary of Hamlet in one paragraph and exactly two words.”</em></p>
+<p>Tokens: [summary, 601], [paragraph, 340], [two, 405], [words, 512]</p>
+<p>Weights pull in two directions:</p>
 <ul class="simple">
 <li><p>“paragraph” pushes toward generating many tokens.</p></li>
-<li><p>“two words” pushes toward a short answer.</p></li>
+<li><p>“two words” pushes toward brevity.</p></li>
 </ul>
 <p>The model must choose. It might output:</p>
 <ul class="simple">
 <li><p><em>“Tragic prince.”</em> (obeys “two words”)</p></li>
-<li><p>Or <em>“Hamlet is a story of revenge and tragedy…”</em> (obeys “paragraph”).</p></li>
+<li><p><em>“Hamlet is a story of revenge and tragedy…”</em> (obeys “paragraph”).</p></li>
 </ul>
-<p>Which path it takes depends on how the conflicting instructions interact in the weighted function.</p>
+<p>Which path it takes depends on how the instructions interact in the function.</p>
 </section>
 <hr class="docutils" />
 <section id="anatomy-of-a-strong-prompt">
 <h2>Anatomy of a Strong Prompt<a class="headerlink" href="#anatomy-of-a-strong-prompt" title="Link to this heading">#</a></h2>
-<p>Good prompts avoid conflict and balance five elements:</p>
+<p>Good prompts balance five elements:</p>
 <ol class="arabic simple">
 <li><p><strong>Context</strong> – who/what/where the AI should “be.”</p></li>
-<li><p><strong>Task</strong> – what to do.</p></li>
+<li><p><strong>Task</strong> – what you want it to do.</p></li>
 <li><p><strong>Constraints</strong> – rules (tone, word count, style).</p></li>
 <li><p><strong>Output format</strong> – how the response should look.</p></li>
-<li><p><strong>Examples</strong> – optional, but powerful.</p></li>
+<li><p><strong>Examples</strong> – optional but powerful.</p></li>
 </ol>
 <p><strong>Example Prompt:</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">You</span> <span class="n">are</span> <span class="n">a</span> <span class="n">Spartan</span> <span class="n">general</span><span class="o">.</span>
 <span class="n">Write</span> <span class="n">a</span> <span class="n">pep</span> <span class="n">talk</span> <span class="ow">in</span> <span class="mi">3</span> <span class="n">sentences</span><span class="o">.</span>
 <span class="n">Use</span> <span class="n">simple</span> <span class="n">words</span><span class="o">.</span>
 <span class="n">No</span> <span class="n">sentence</span> <span class="n">may</span> <span class="n">exceed</span> <span class="mi">8</span> <span class="n">words</span><span class="o">.</span>
+<span class="n">Here</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">example</span> <span class="n">pep</span> <span class="n">talk</span><span class="p">:</span>
+<span class="p">[</span><span class="n">insert</span> <span class="n">example</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Tokens: [Spartan, 742], [general, 188], [pep, 611], [talk, 330], [simple, 190], [words, 512] …</p>
-<p>Because these tokens strongly activate learned weights for tone and style, the model outputs short, forceful lines.</p>
+<p>These tokens activate strong associations with brevity and command, leading to short, forceful lines.</p>
 </section>
 <hr class="docutils" />
 <section id="iteration-prompts-as-drafts">
 <h2>Iteration: Prompts as Drafts<a class="headerlink" href="#iteration-prompts-as-drafts" title="Link to this heading">#</a></h2>
-<p>Prompting is iterative: like editing drafts, you refine step by step.</p>
+<p>Prompting is iterative: like editing, you refine step by step.</p>
 <p><strong>Example – The Dragon Story</strong></p>
 <ol class="arabic simple">
-<li><p>Prompt: <em>“Tell me a story about a dragon.”</em>
-Tokens: [story, 145], [dragon, 302] → generic output.</p></li>
-<li><p>Add constraint: <em>“…for a 5-year-old.”</em>
-Token [5-year-old, 712] pulls the style toward simpler words.</p></li>
-<li><p>Add theme: <em>“…with a moral about sharing.”</em>
-Token [sharing, 366] increases likelihood of moralizing ending.</p></li>
-<li><p>Add style: <em>“…in the style of Dr. Seuss.”</em>
-Token [Dr. Seuss, 498] tilts prediction toward rhyme and rhythm.</p></li>
+<li><p>Prompt: <em>“Tell me a story about a dragon.”</em> → generic output.</p></li>
+<li><p>Add constraint: <em>“…for a 5-year-old.”</em> → simpler words.</p></li>
+<li><p>Add theme: <em>“…with a moral about sharing.”</em> → moralizing ending.</p></li>
+<li><p>Add style: <em>“…in the style of Dr. Seuss.”</em> → rhyme and rhythm.</p></li>
 </ol>
-<p>Each added token shifts the output distribution until it matches the desired style.</p>
+<p>Each added token shifts the distribution until it matches the desired style. Often, it helps to run multiple versions to find the best result.</p>
 </section>
 <hr class="docutils" />
 <section id="using-ai-to-improve-prompts">
 <h2>Using AI to Improve Prompts<a class="headerlink" href="#using-ai-to-improve-prompts" title="Link to this heading">#</a></h2>
 <p>You can also ask the AI to improve your own instructions.</p>
-<p><strong>Example:</strong></p>
-<p>Prompt: <em>“Here’s my prompt: describe a banana in a funny way. Suggest a better version.”</em></p>
+<p><strong>Example:</strong>
+Prompt: <em>“Here’s my prompt: describe a banana in a funny way. Suggest a better version.”</em></p>
 <p>Model’s output might be:</p>
 <ul class="simple">
 <li><p><em>“Describe a banana as if Shakespeare wrote a comedy about fruit.”</em></p></li>
 </ul>
-<p>Here, the token [Shakespeare, 742] strongly activates associations with Elizabethan style, producing more vivid outputs.</p>
+<p>Here, the token [Shakespeare, 742] activates rich stylistic associations, producing more vivid outputs.</p>
 </section>
-<hr class="docutils" />
 <section id="key-takeaways">
 <h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>LLMs are giant functions predicting the next token.</p></li>
 <li><p>Tokens are numbers; weights tell the model how to combine them.</p></li>
 <li><p>Prompts are instructions—changing the tokens changes the output.</p></li>
-<li><p>Redundancy is weak; descriptive tokens are powerful.</p></li>
+<li><p>Redundancy is weak; descriptive words are strong.</p></li>
 <li><p>Context windows limit memory: too many tokens push old ones out.</p></li>
 <li><p>Models handle typos but reward clarity.</p></li>
 <li><p>Contradictory prompts confuse predictions.</p></li>
@@ -668,16 +663,16 @@ Token [Dr. Seuss, 498] tilts prediction toward rhyme and rhythm.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-predicting-the-next-word">Example: Predicting the Next Word</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-and-prompt-engineering">Prompts and Prompt engineering</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-basic-rules">Some basic rules</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-redundancy">Avoid redundancy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompts-and-prompt-engineering">Prompts and Prompt Engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-basic-rules">Some Basic Rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-redundancy">Avoid Redundancy</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tokens-and-context-windows">Tokens and Context Windows</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dilbert-on-writing">Dilbert on Writing</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quirks-and-limits">Quirks and Limits</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#side-not-on-spelling">Side not on spelling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#side-note-on-spelling">Side Note on Spelling</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-quirk">Another quirk</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-quirk-seahorse-emoji">Another Quirk: Seahorse Emoji</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicting-instructions">Conflicting Instructions</a></li>
