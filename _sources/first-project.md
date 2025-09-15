@@ -207,7 +207,12 @@ We’ll read the model’s label (`go` or `stop`) and treat **go** like pressing
   </head>
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
+   <!-- 1) TensorFlow.js (global `tf`) -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+
+<!-- 2) Teachable Machine (global `tmImage`) -->
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.5/dist/teachablemachine-image.min.js"></script>
+
     <script>
       // === Paste your Teachable Machine model URL (must end with /) ===
       const MODEL_URL = "https://teachablemachine.withgoogle.com/models/REPLACE_ME/";
